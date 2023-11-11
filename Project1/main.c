@@ -272,7 +272,7 @@ int main()
     {
        printf("%s", s);
        scanf(" %u", &command);
-       while(getchar() != '\n'); // consumes newline character and any before it, making sure fgets() doesn' end up reading it 
+       while(getchar() != '\n'); // consumes newline character and any before it, making sure fgets() doesn't end up reading it 
        switch (command)
        {
             case 0:
