@@ -308,8 +308,7 @@ int main()
                 if(k == -1)
                     printf("%s", "No transactions loaded, add some!\n");
                 else
-                    printf("%g\n", account_balance(t, k));
-                previous_transactions(t, k);
+                    previous_transactions(t, k);
                 break;
             }
 
