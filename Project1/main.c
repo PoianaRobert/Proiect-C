@@ -290,6 +290,9 @@ int main()
 
             case 2:
             {
+                if(k == -1)
+                    printf("%s", "No transactions found, add some!\n");
+                else
                 write_to_file("output2.txt", t[k]);
                 break;
             }
@@ -297,7 +300,7 @@ int main()
             case 3:
             {
                 if(k == -1)
-                    printf("%s", "No transactions loaded, add some!\n");
+                    printf("%s", "No transactions found, add some!\n");
                 else
                     printf("%g\n", account_balance(t, k));
                 break;
@@ -306,7 +309,7 @@ int main()
             case 4:
             {
                 if(k == -1)
-                    printf("%s", "No transactions loaded, add some!\n");
+                    printf("%s", "No transactions found, add some!\n");
                 else
                     previous_transactions(t, k);
                 break;
