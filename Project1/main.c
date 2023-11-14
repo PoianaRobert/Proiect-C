@@ -22,7 +22,7 @@ void menu(char str[])
     */
     strcpy(str, "");
     strcat(str, "1.Add new transaction\n");
-    strcat(str, "2.Write current transaction to file\n");
+    strcat(str, "2.Write a transaction to file for later use\n");
     strcat(str, "3.Calculate current balance\n");
     strcat(str, "4.Display a list of previous transactions\n");
     strcat(str, "5.Load data from file\n");
@@ -65,7 +65,7 @@ bool valid_date(char date[])
                     return true;
                 else if((d[0] >= 1 && d[0] <= 30) && (d[1] == 4 || d[1] == 6 || d[1] == 9 || d[1] == 11))
                     return true;
-                else if((d[1] >= 1 && d[1] <= 28) && d[2] == 2)
+                else if((d[0] >= 1 && d[0] <= 28) && d[1] == 2)
                     return true;
                 else if(d[0] == 29 && d[1] == 2 && (d[2]%400 == 0 || (d[2]%4 == 0 && d[2] % 100 != 0)))
                     return true;
@@ -152,6 +152,7 @@ void previous_transactions(struct transaction t[], int n)
 
     for (int i=0; i<=n; i++)
     {
+        printf("Transaction number %d\n", i+1);
         printf("Transaction type: %s\n", t[i].type);
         printf("Transaction date: %s\n", t[i].date);
         printf("Transaction amount: %g\n", t[i].amount);
@@ -293,7 +294,33 @@ int main()
                 if(k == -1)
                     printf("%s", "No transactions found, add some!\n");
                 else
-                write_to_file("output2.txt", t[k]);
+                    {
+                        char c='N';
+                        int n;
+                        do{
+                        
+                        previous_transactions(t, k);
+                        
+                        do{
+                        printf("Which transaction would you like to print?\n");
+                        scanf("%d", &n);
+                        while(getchar() != '\n');
+                        if(n > k+1 || n < 1)
+                            printf("Invalid number, provide one of the given ones\n");
+                        }while(n > k+1);
+                        
+                        write_to_file("output2.txt", t[n-1]);
+                        
+                        printf("Do you wish to add save another transaction to the file?(Y/N)\n");
+                        do{
+                        scanf("%c", &c);
+                        while(getchar() != '\n');
+                        if(strchr("YyNn", c) == NULL)
+                            printf("Provide a Y/N character\n");
+                        }while(strchr("YyNn", c) == NULL);
+                        
+                        }while(c == 'Y' || c == 'y');
+                    }
                 break;
             }
 
@@ -309,7 +336,7 @@ int main()
             case 4:
             {
                 if(k == -1)
-                    printf("%s", "No transactions found, add some!\n");
+                    printf("%s", "No transactions loaded, add some!\n");
                 else
                     previous_transactions(t, k);
                 break;
