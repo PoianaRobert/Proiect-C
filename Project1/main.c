@@ -307,7 +307,7 @@ int main()
                         while(getchar() != '\n');
                         if(n > k+1 || n < 1)
                             printf("Invalid number, provide one of the given ones\n");
-                        }while(n > k+1);
+                        }while(n > k+1 || n<1);
                         
                         write_to_file("output2.txt", t[n-1]);
                         
