@@ -101,7 +101,7 @@ void new_transaction_data(struct transaction *tr)
     printf("%s\n", "Transaction amount(>0): ");
     scanf("%g", &(tr->amount));
     while(getchar() != '\n'); // consumes newline character, making sure fgets() doesn' end up reading it
-    } while(tr->amount < 0); 
+    } while(tr->amount <= 0); 
 }
 
 void write_to_file(char s[], struct transaction t)
