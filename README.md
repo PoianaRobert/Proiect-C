@@ -1,4 +1,4 @@
 # Proiect-C
 Poiana Robert
-ingineria informatiei\n
+ingineria informatiei
 Prezentare video: https://youtu.be/w4xtKvBnMqY
