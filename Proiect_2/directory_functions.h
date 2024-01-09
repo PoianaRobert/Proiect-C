@@ -301,6 +301,57 @@ int login(char username[], char password[], unsigned count)
   return -1;
 }
 
+int find_name(char username[], unsigned count)
+{
+  /*
+  function for user login: checks if the given userame and password exists, if they dont it returns -1
+  username: char array with given username
+  password: char array with given password
+  count: number of acccounts 
+  */
+  char *temp = malloc(MAX * sizeof(char)), file_name[50],*p;
+  int k = 0;
+  char path[50];
+  username[strcspn(username, "\n")] = '\0';
+  for(unsigned k=0; k < count; k++)
+  {
+    if (sprintf(path, "%s%u/%u%s", "./Users/", k, k, ".txt") < 0) 
+    {
+      printf("Error using sprintf\n");
+      free(temp);
+      return -1;
+    }
+    FILE *f = fopen(path, "r");
+    if (f == NULL) 
+    {
+      printf("Error opening file\n");
+      free(temp);
+      return -1;
+    }
+      if(fgets(temp, MAX, f) != NULL)
+      {
+        p = strtok(temp, " \n");
+        if(p != NULL)
+          {
+            strcpy(file_name, p);
+            p = strtok(NULL, " \n");
+            if(p != NULL)
+              { 
+                if(strcmp(username, file_name) == 0)
+                  {
+                    fclose(f);
+                    free(temp);
+                    return k;
+                  }
+              }
+          }
+      }
+    fclose(f);
+  }
+  free(temp);
+  return -1;
+}
+
 void write_entity_to_file(char s[], char name[], char contact_info[], char desc[])
 {
     /*

@@ -101,7 +101,7 @@ void new_transaction_data(struct transaction *tr)
         tr->type = strdup(temp);
         printf("tr type: %s\n", tr->type);
         free(temp);
-    } while(strcmp(tr->type, "income") != 0 && strcmp(tr->type, "expense") != 0);
+    } while(strcmp(tr->type, "income") != 0 && strcmp(tr->type, "expense") != 0 && strcmp(tr->type, "transaction") != 0);
     
     do{
         char *temp = NULL;
@@ -138,6 +138,48 @@ void new_transaction_data(struct transaction *tr)
         scanf("%g", &(tr->amount));
         while(getchar() != '\n'); // consumes newline character, making sure fgets() doesn' end up reading it
         } while(tr->amount <= 0); 
+}
+
+void new_transfer_data(struct transaction *tr, int money)
+{
+    /* 
+    reads a treansaction from keyboard and stores in an element of the array of transaction structs
+    *tr: a pointer to current struct array that data will be read into
+    */
+    initialize_transaction(tr);
+    tr->type = malloc(strlen("expense") + 1);
+    strcpy(tr->type, "expense");
+    do{
+        char *temp = NULL;
+        size_t len = 0;
+        printf("%s\n", "Transfer date(DD.MM.YYYY): ");
+        if(getline(&temp, &len, stdin) == -1) 
+        {
+            printf("Error using getline()\n");
+            free(temp);
+            return;
+        }
+        temp[strcspn(temp, "\n")] = '\0';
+        tr->date = strdup(temp);
+        free(temp);
+    } while( !valid_date(tr->date));
+
+    do{
+        char *temp = NULL;
+        size_t len = 0;
+        printf("%s\n", "Transfer desc: ");
+        if(getline(&temp, &len, stdin) == -1) 
+        {
+            printf("Error using getline()\n");
+            free(temp);
+            return;
+        }
+        temp[strcspn(temp, "\n")] = '\0';
+        tr->desc = strdup(temp);
+        free(temp);
+    } while(strlen(tr->desc) == 0);
+
+    tr->amount = money;
 }
 
 void write_to_file(char s[], struct transaction t)

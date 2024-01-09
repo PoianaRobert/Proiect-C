@@ -1,3 +1,4 @@
 bob pog
 income 12.05.2005 1 1 dolla
 income 12.07.2005 123 dscssf
+expense 12.02.2002 10 love kitty

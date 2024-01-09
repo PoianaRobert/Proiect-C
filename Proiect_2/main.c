@@ -337,6 +337,46 @@ int main()
                     break;
                   }
 
+                  case 9:
+                  {
+                    char *new_data = calloc(MAX, sizeof(char));
+                    int money, index_2;
+
+                    do{  
+                    printf("Please provide the name of the account you wish to make a transaction to:\n"); 
+                    fgets(new_data, MAX, stdin);
+                    }while(find_name(new_data, k) == -1);
+                    
+                    index_2 = find_name(new_data, k);
+
+                    do{
+                      printf("Please provide amount of money you wish to make a transaction with(must be greater than 0 and affordable)\n");
+                      if(scanf(" %u", &money) != 1);
+                        while (getchar() != '\n');
+                    }while(money <= 0 || money > balance(my_account[index]));
+                    
+                    new_transfer_data(&my_account[index].transactions[my_account[index].transaction_count], money);
+                    my_account[index_2].transactions[my_account[index_2].transaction_count].amount = my_account[index].transactions[my_account[index].transaction_count].amount;
+                    my_account[index_2].transactions[my_account[index_2].transaction_count].type = malloc(strlen("income") + 1);
+                    strcpy(my_account[index_2].transactions[my_account[index_2].transaction_count].type, "income");
+                    my_account[index_2].transactions[my_account[index_2].transaction_count].date = strdup(my_account[index].transactions[my_account[index].transaction_count].date);
+                    my_account[index_2].transactions[my_account[index_2].transaction_count].desc= strdup(my_account[index].transactions[my_account[index].transaction_count].desc);
+                    
+                    char path_2[50];
+                    if (sprintf(path_2, "%s%u/%u%s", "./Users/", index_2, index_2, ".txt") < 0) 
+                      {
+                        printf("Error using sprintf\n");
+                        return -1;
+                      }
+                    write_to_file(path, my_account[index].transactions[my_account[index].transaction_count]);
+                    write_to_file(path_2, my_account[index_2].transactions[my_account[index_2].transaction_count]);
+
+                    my_account[index].transaction_count++;
+                    my_account[index_2].transaction_count++;
+                    free(new_data);
+                    break;
+                  }
+
                   default:
                   {
                     printf("Invalid commad! \n");
@@ -394,7 +434,8 @@ void account_menu(char s[])
   strcat(s, "5.Get financial report for timeframe\n");
   strcat(s, "6.Add an entity with whom you do business with\n");
   strcat(s, "7.Print transactions\n"); 
-  strcat(s, "8.Print entities\n");  
+  strcat(s, "8.Print entities\n");
+  strcat(s, "9.Transfer to an account\n"); 
 }
 
 void initialize_account(struct Account *my_accout)
@@ -548,12 +589,10 @@ int balance(struct Account my_account)
   for(unsigned i=0; i < my_account.transaction_count; i++)
     if(strcmp(my_account.transactions[i].type, "income") == 0)
       {
-        printf("expected income: %s %g\n", my_account.transactions[i].type, my_account.transactions[i].amount);
         sum += my_account.transactions[i].amount;
       }
     else
       {
-        printf("expected expense: %s %g\n", my_account.transactions[i].type, my_account.transactions[i].amount);
         sum -= my_account.transactions[i].amount;
       }
   return sum;
