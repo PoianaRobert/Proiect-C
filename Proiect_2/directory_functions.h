@@ -286,6 +286,58 @@ int login(char username[], char password[], unsigned count)
             if(p != NULL)
               {
                 strcpy(file_password, p);
+                if(strcmp(username, file_name) == 0 && strcmp(password, file_password) == 0)
+                  {
+                    fclose(f);
+                    free(temp);
+                    return k;
+                  }
+              }
+          }
+      }
+    fclose(f);
+  }
+  free(temp);
+  return -1;
+}
+
+int avalabile_credentials(char username[], char password[], unsigned count)
+{
+  /*
+  function to check if given credentials are currently avalabile: checks if either the given userame or password exists, if they dont it returns -1
+  username: char array with given username
+  password: char array with given password
+  count: number of acccounts 
+  */
+  char *temp = malloc(MAX * sizeof(char)), file_name[50], file_password[50], *p;
+  int k = 0;
+  char path[50];
+  for(unsigned k=0; k < count; k++)
+  {
+    if (sprintf(path, "%s%u/%u%s", "./Users/", k, k, ".txt") < 0) 
+    {
+      printf("Error using sprintf\n");
+      free(temp);
+      return -1;
+    }
+    FILE *f = fopen(path, "r");
+    if (f == NULL) 
+    {
+      printf("Error opening file\n");
+      free(temp);
+      return -1;
+    }
+      
+      if(fgets(temp, MAX, f) != NULL)
+      {
+        p = strtok(temp, " \n");
+        if(p != NULL)
+          {
+            strcpy(file_name, p);
+            p = strtok(NULL, " \n");
+            if(p != NULL)
+              {
+                strcpy(file_password, p);
                 if(strcmp(username, file_name) == 0 || strcmp(password, file_password) == 0)
                   {
                     fclose(f);

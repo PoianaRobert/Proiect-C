@@ -85,7 +85,7 @@ int main()
           printf("Give password\n");
           fgets(password, 49, stdin);
           password[strcspn(password, "\n")] = '\0';
-          if(login(name, password, k) ==  -1)
+          if(avalabile_credentials(name, password, k) ==  -1)
           {
             initialize_account(&my_account[k]);
             my_account[k].name = calloc(50, sizeof(char));
@@ -497,7 +497,6 @@ void load_accounts(struct Account *accounts, unsigned *count)
     FILE *f = fopen(path, "r");
     if (f == NULL)
     break;
-    
     
     fgets(temp, 500, f);
     accounts[*count].name = calloc(50, sizeof(char));
